@@ -42,15 +42,8 @@ namespace PresentationLayer.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> Create(Book book)
         {
-            try
-            {
-                var created = await _bookService.CreateAsync(book);
-                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var created = await _bookService.CreateAsync(book);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);  
         }
 
         [HttpPut("{id}")]
@@ -59,29 +52,16 @@ namespace PresentationLayer.Controllers
             if (id != book.Id)
                 return BadRequest("ID mismatch");
 
-            try
-            {
-                var updated = await _bookService.UpdateAsync(book);
-                return Ok(updated);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            var updated = await _bookService.UpdateAsync(book);
+            return Ok(updated);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            try
-            {
-                await _bookService.DeleteAsync(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _bookService.DeleteAsync(id);
+            return NoContent();
         }
     }
 }
