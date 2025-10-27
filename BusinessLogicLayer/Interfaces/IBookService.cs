@@ -1,15 +1,16 @@
-﻿using BusinessLogicLayer.Models;
-
+﻿using BusinessLogicLayer.Dto.Requests.Book;
+using BusinessLogicLayer.Dto.Responses.Book;
+    
 namespace BusinessLogicLayer.Interfaces
 {
     public interface IBookService
     {
-        Task<Book> GetByIdAsync(Guid id);
-        Task<List<Book>> GetAllAsync();
-        Task<List<Book>> GetByAuthorIdAsync(Guid authorId);
-        Task<Book> CreateAsync(Book book);
-        Task<Book> UpdateAsync(Book book);
-        Task DeleteAsync(Guid id);
-        Task<bool> ExistsAsync(Guid id);
+        Task<BookResponseDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<BookResponseDto>> GetAllAsync(CancellationToken cancellationToken);
+        Task<List<BookResponseDto>> GetByAuthorIdAsync(Guid authorId, CancellationToken cancellationToken);
+        Task<BookResponseDto> CreateAsync(CreateBookDto bookDto, CancellationToken cancellationToken);
+        Task<BookResponseDto> UpdateAsync(Guid id, UpdateBookDto bookDto, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
     }
 }

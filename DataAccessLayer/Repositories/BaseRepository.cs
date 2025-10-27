@@ -1,40 +1,52 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
 {
-    protected readonly List<T> _dataSet;
+    protected readonly DbContext _context;
+    protected readonly DbSet<T> _dbSet;
 
-    protected BaseRepository(List<T> dataSet)
+    protected BaseRepository(DbContext context)
     {
-        _dataSet = dataSet;
-    }
-    public virtual Task<bool> ExistsAsync(Guid id)
-    {
-        return Task.FromResult(_dataSet.Any(e => e.Id == id));
+        _context = context;
+        _dbSet = context.Set<T>();
     }
 
-    public virtual Task<List<T>> GetAllAsync()
+    public virtual async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return Task.FromResult(_dataSet.ToList());
+        return await _dbSet.ToListAsync();
     }
 
-    public virtual Task<T?> GetByIdAsync(Guid id) 
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = _dataSet.FirstOrDefault(e => e.Id == id);
-        return Task.FromResult(entity);
+        return await _dbSet.FindAsync(id);
     }
 
-    public virtual Task<T> CreateAsync(T entity)
+    public virtual async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
     {
-        _dataSet.Add(entity);
-        return Task.FromResult(entity);
+        return _dbSet.Any(e => e.Id == id);
     }
 
-    public virtual Task DeleteAsync(T entity)  
+    public virtual async Task<T> CreateAsync(T entity, CancellationToken cancellationToken)
     {
-        _dataSet.Remove(entity);
-        
-        return Task.CompletedTask;
+        await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        return entity;
+    }
+
+    public virtual async Task<Guid> DeleteAsync(T entity, CancellationToken cancellationToken)
+    {
+
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
+        return entity.Id;
+    }
+
+    public virtual async Task<T> UpdateAsync(T entity, CancellationToken cancellationToken)
+    {
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 }

@@ -4,7 +4,7 @@
     {
        protected AuthorEntity() { }
 
-       public AuthorEntity(Guid id, string name, DateTime dateOfBirth)
+       public AuthorEntity(Guid id, string name, DateOnly dateOfBirth)
        {
            Id = id;
            Name = name;
@@ -13,7 +13,7 @@
        }
 
        public string Name { get; set; }
-       public DateTime DateOfBirth { get; set; }
+       public DateOnly DateOfBirth { get; set; }
 
        public ICollection <BookEntity> Books { get; set; }
     }

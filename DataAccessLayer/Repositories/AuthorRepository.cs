@@ -6,7 +6,7 @@ namespace DataAccessLayer.Repositories
 {
     public class AuthorRepository : BaseRepository<AuthorEntity>, IAuthorRepository
     {
-        public AuthorRepository(DataContext context) : base(context.Authors)
+        public AuthorRepository(LibraryDbContext context) : base(context)
         {
         }
     }

@@ -1,13 +1,11 @@
-// Program.cs
 using DataAccessLayer.Context;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
 using BusinessLogicLayer.Services;
 using BusinessLogicLayer.Interfaces;
 using PresentationLayer.Middlewares;
-using Microsoft.Extensions.DependencyInjection;
 using BusinessLogicLayer.Mapping;
-using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +19,8 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<BookProfile>();
 });
 
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();

@@ -1,14 +1,15 @@
-﻿using BusinessLogicLayer.Models;
+﻿using BusinessLogicLayer.Dto.Requests.Author;
+using BusinessLogicLayer.Dto.Responses.Author;
 
 namespace BusinessLogicLayer.Interfaces
 {
     public interface IAuthorService
     {
-        Task<Author> GetByIdAsync(Guid id);
-        Task<List<Author>> GetAllAsync();
-        Task<Author> CreateAsync(Author author);
-        Task<Author> UpdateAsync(Author author);
-        Task DeleteAsync(Guid id);
-        Task<bool> ExistsAsync(Guid id);
+        Task<AuthorResponseDto> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<AuthorResponseDto>> GetAllAsync(CancellationToken cancellationToken);
+        Task<AuthorResponseDto> CreateAsync(CreateAuthorDto authorDto, CancellationToken cancellationToken);
+        Task<AuthorResponseDto> UpdateAsync(Guid id, UpdateAuthorDto authorDto, CancellationToken cancellationToken);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
     }
 }
