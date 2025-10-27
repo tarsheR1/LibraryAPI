@@ -27,8 +27,6 @@ namespace PresentationLayer.Controllers
         public async Task<ActionResult<Author>> GetById(Guid id, CancellationToken cancellationToken)
         {
             var author = await _authorService.GetByIdAsync(id, cancellationToken);
-            if (author == null)
-                return NotFound();
 
             return Ok(author);
         }
